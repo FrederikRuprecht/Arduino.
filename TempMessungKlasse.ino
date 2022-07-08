@@ -1,74 +1,84 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+
 #define temPin 2
 
 OneWire oneWire(temPin); 
 
 DallasTemperature sensors(&oneWire);
-
-
- class TempMessung 
+ 
+ class TempMessung
 {  
-  private: 
-float Durchschnitt(int AnzMessung)
- {
-  sensors.requestTemperatures();
-for (int x = 0; x < AnzMessung; x++)
+  public: 
+float durchschnitt(int AnzMessung)
+{
+  float sum = 0;
+  for (int x = 0; x <AnzMessung; ++x)
   {
-    float Wert1 = sensors.getTempCByIndex(0);
-    int Sum = 0;
-    Sum += Wert1;
+  sensors.requestTemperatures();
+  sum += sensors.getTempCByIndex(0);
+  delay(1);
   }
+  float Ave = sum / AnzMessung;
+  return Ave;
+}
+
+float maxWert (int AnzMessung)
+ {
+  float y = 0;
+  for (int x = 0; x<AnzMessung; ++x)
+  {
+  sensors.requestTemperatures();
+  float z = sensors.getTempCByIndex(0);
+  y = max(y,z);
+  delay(1);}
+  return y;
  }
 
-float MaxWert(int AnzMessung)
+float minWert (int AnzMessung)
  {
   sensors.requestTemperatures();
- for (int y = 0; y < AnzMessung; y++)
+  float y = sensors.getTempCByIndex(0);
+  for (int x = 0; x<AnzMessung; ++x)
   {
-    float Wert2 = sensors.getTempCByIndex(0);
-  int maxWert[AnzMessung];
-  maxWert[y] = Wert2;
-  }
- }
-
-float MinWert(int AnzMessung)
- {
   sensors.requestTemperatures();
- for (int z = 0; z < AnzMessung; z++)
-  {
-    float Wert3 = sensors.getTempCByIndex(0);
-  int minWert[AnzMessung];
-  minWert[z] = Wert3;
-  }
+  float z = sensors.getTempCByIndex(0);
+  y = min(y,z);
+  delay(1);}
+  return y;
  }
-public:
-  float Ave (float Sum, int AnzMessung){
-    return(Sum / AnzMessung);
-  }
-  float Max (int maxWert){
-    return(max(maxWert));
-  }
-  float Min (int minWert){
-  return(min(minWert));
-  }
 };
+TempMessung A1;
 
 void setup()
 {
   Serial.begin(9600);
-  int AnzMessung = 10;
-  sensors.begin();       
-  
-
+  sensors.begin();
+         
 }
-void loop()
+  
+void loop() 
 {
-  return maxWert[];
+int AnzahlMessung = 100;
 
-  Serial.println("Maximaler Wert: " +  Max);
-  Serial.println("Maximaler Wert: " +  Min);
-  Serial.println("Durchschnittlicher Wert: " + Ave);
-  delay(500);
+
+sensors.requestTemperatures();
+Serial.print("Erste Messung: ");
+Serial.println(sensors.getTempCByIndex(0));
+
+Serial.print("Gerundete Messung aus ");
+Serial.print(AnzahlMessung);
+Serial.print(" Messungen: ");
+Serial.println(A1.durchschnitt(AnzahlMessung));
+
+Serial.print("Höchste Messung aus ");
+Serial.print(AnzahlMessung);
+Serial.print(" Messungen: ");
+Serial.println(A1.maxWert(AnzahlMessung));
+
+Serial.print("Niedrigste Messung aus ");
+Serial.print(AnzahlMessung);
+Serial.print(" Messungen: ");
+Serial.println(A1.minWert(AnzahlMessung));
 }
