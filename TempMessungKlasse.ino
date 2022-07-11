@@ -1,4 +1,4 @@
-#include <OneWire.h>          
+#include <OneWire.h>
 #include <DallasTemperature.h>
 #define temPin 2
 
@@ -50,25 +50,13 @@ void setup()
 
 void loop() 
 {
-  v++;
+  v++;  
+  
   sensors.requestTemperatures();
   float y = sensors.getTempCByIndex(0);
-  b+=y;
-  Serial.println("Maximaler Wert");
-  Serial.println(A1.Max_Wert(y));
-  
-  Serial.println("Minimaler Wert");
-  Serial.println(A1.Min_Wert(y));
-  
-  Serial.println("Durchschnittlicher Wert");
-  Serial.println(A1.Durchschnitt(b,v));
-  Serial.println(" ");
-
-  A1.addSample(35.32);
-
   if (Serial.available())
   {
-    char data = Serial.read();
+    /*char data = Serial.read();    //Reset Funktion
     if (data == 'o')
     {
       x=0;
@@ -79,6 +67,17 @@ void loop()
     }
     else{
       Serial.println("Not Resetted");
+    }*/
+    y=Serial.parseFloat();    //Additional Value
     }
-  }
+    b+=y; 
+  Serial.println("Maximaler Wert");
+  Serial.println(A1.Max_Wert(y));
+  
+  Serial.println("Minimaler Wert");
+  Serial.println(A1.Min_Wert(y));
+  
+  Serial.println("Durchschnittlicher Wert");
+  Serial.println(A1.Durchschnitt(b,v));
+  Serial.println(" ");
 }
