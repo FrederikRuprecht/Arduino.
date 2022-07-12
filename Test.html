@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Temperaturmessung</title>
+<meta http-equiv='content-type' content='text/html'; charset='utf-8'>
+<style>
+body { background-color: #444343; font-size: 50px; font-family: Arial, Helvetica, Sans-Serif; color: #e0e0e0;margin-left: 40px; }
+h1 { color: #2db0d7; margin-top: 50px; margin-bottom: 50px; }
+#temp { width: 230px; height: 80px; border: 5px solid #2db0d7; text-align:center; padding: 1px; color: #2a089a; background-color: #000000; font-size: 60px; }
+</style>
+</head>
+<body>
+<h1>Temperaturmessung</h1>
+<table bgcolor="#2db0d7">
+    <tr align="center">
+        <th width="350">Aktuelle Temperatur:&nbsp;</th>
+        <th width="350">Maximale Temperatur:</th>
+        <th width="350">Minimale Temperatur:</th>
+        <th width="350">Durchschnitt</th>
+    </tr>
+    <tr align="center">
+        <td id='temp'><span id='TempWert'>-</span>°C</td>
+        <td id='temp'><span id='TempWert'>-</span>°C</td>
+        <td id='temp'><span id='TempWert'>-</span>°C</td>
+        <td id='temp'><span id='TempWert'>-</span>°C</td>
+    </tr>
+</table>
+<script>
+setInterval(function() {
+  getData();
+}, 1000);
+function getData() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById('TempWert').innerHTML = this.responseText;
+    }
+  };
+  xhttp.open('GET', 'TempWeb', true);
+  xhttp.send();
+}
+</script>
+</body>
+</html>

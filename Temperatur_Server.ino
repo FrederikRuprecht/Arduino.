@@ -18,47 +18,68 @@ ESP8266WebServer server(80);
 
 void indexHTML() {    
   server.send(200, "text/html", 
-  "<!DOCTYPE html>\
-  <html>\
-  <head>\
-  <title>Temperaturmessung</title>\
-  <meta http-equiv='content-type' content='text/html'; charset='utf-8'>\
-  <style>\
-  body { background-color: #585858; font-size: 50px; font-family: Arial, Helvetica, Sans-Serif; color: #F2F2F2; margin-left: 40px; }\
-  h1 { color: #2ECCFA; margin-top: 50px; margin-bottom: 0px; }\
-  h2 { font-size: 20px; margin-top: 0px; margin-bottom: 50px; }\
-  #temp { width: 230px; height: 80px; border: 5px solid #F2F2F2; text-align:center; padding: 1px; color: #9AFE2E; background-color: #000000; font-size: 60px; }\
-  </style>\
-  </head>\
-  <body>\
-  <h1>Temperaturmessung</h1>\
-  <h2></h2>\
-  <table><tr><td>Aktuelle Temperatur:&nbsp;</td>\
-  <td id='temp'><span id='TempWert'>-</span>°C</td></tr></table>\
-  <script>\
-  setInterval(function() {\
-    getData();\
-  }, 1000);\
-  function getData() {\
-    var xhttp = new XMLHttpRequest();\
-    xhttp.onreadystatechange = function() {\
-      if (this.readyState == 4 && this.status == 200) {\
-        document.getElementById('TempWert').innerHTML = this.responseText;\
-      }\
-    };\
-    xhttp.open('GET', 'TempWeb', true);\
-    xhttp.send();\
-  }\
-  </script>\
-  </body>\
-  </html>\
-  ");
+"<!DOCTYPE html>\n"
+"<html>\n"
+"<head>\n"
+"<title>Temperaturmessung</title>\n"
+"<meta http-equiv='content-type' content='text/html'; charset='utf-8'>\n"
+"<style>\n"
+"body { background-color: #444343; font-size: 50px; font-family: Arial, Helvetica, Sans-Serif; color: #e0e0e0;margin-left: 40px; }\n"
+"h1 { color: #2db0d7; margin-top: 50px; margin-bottom: 50px; }\n"
+"#temp { width: 230px; height: 80px; border: 5px solid #2db0d7; text-align:center; padding: 1px; color: #2a089a; background-color: #000000; font-size: 60px; }\n"
+"</style>\n"
+"</head>\n"
+"<body>\n"
+"<h1>Temperaturmessung</h1>\n"
+"<table bgcolor=\"#2db0d7\">\n"
+"    <tr align=\"center\">\n"
+"        <th width=\"350\">Aktuelle Temperatur:&nbsp;</th>\n"
+"        <th width=\"350\">Maximale Temperatur:</th>\n"
+"        <th width=\"350\">Minimale Temperatur:</th>\n"
+"        <th width=\"350\">Durchschnitt</th>\n"
+"    </tr>\n"
+"    <tr align=\"center\">\n"
+"        <td id='temp'><span id='TempWert_1'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert_2'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert_3'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert_4'>-</span>°C</td>\n"
+"    </tr>\n"
+"</table>\n"
+"<script>\n"
+"setInterval(function() {\n"
+"  getData_1();\n"
+"}, 1000);\n"
+"function getData_1() {\n"
+"  var xhttp = new XMLHttpRequest();\n"
+"  xhttp.onreadystatechange = function() {\n"
+"    if (this.readyState == 4 && this.status == 200) {\n"
+"      document.getElementById('TempWert_1').innerHTML = this.responseText;\n"
+"    }\n"
+"    if (this.readyState == 4 && this.status == 200) {\n"
+"      document.getElementById('TempWert_2').innerHTML = this.responseText;\n"
+"    }\n"
+"    if (this.readyState == 4 && this.status == 200) {\n"
+"      document.getElementById('TempWert_3').innerHTML = this.responseText;\n"
+"    }\n"
+"    if (this.readyState == 4 && this.status == 300) {\n"
+"      document.getElementById('TempWert_4').innerHTML = this.responseText;\n"
+"    }\n"
+"  };\n"
+"  xhttp.open('GET', 'TempWeb', true);\n"
+"  xhttp.send();\n"
+"}\n"
+"</script>\n"
+"</body>\n"
+"</html>"
+  );
 }
 
 void TempMessung() {
   sensors.requestTemperatures();
-  String TempWert = String(sensors.getTempCByIndex(0),1); 
-  server.send(200, "text/plane", TempWert);
+  String TempWert_1 = String(45.5,1);
+  String TempWert_2 = String(4.5,1);
+  server.send(200, "text/plane", TempWert_1);
+  server.send(300, "text/plane", TempWert_2);
 }
 
 void setup(void){
