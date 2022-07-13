@@ -26,14 +26,16 @@ h1 { color: #2db0d7; margin-top: 50px; margin-bottom: 50px; }
     </tr>
 </table>
 <script>
-setInterval(function() {
+setInterval(function() {t = t+1
   getData();
-}, 1000);
+ }, 1);
 function getData() {
+  var t = 0
+  t = t+1
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById('TempWert').innerHTML = this.responseText;
+      document.getElementById('TempWert').innerHTML = t;
     }
   };
   xhttp.open('GET', 'TempWeb', true);

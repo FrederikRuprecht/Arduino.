@@ -1,4 +1,3 @@
-
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
@@ -39,30 +38,32 @@ void indexHTML() {
 "        <th width=\"350\">Durchschnitt</th>\n"
 "    </tr>\n"
 "    <tr align=\"center\">\n"
-"        <td id='temp'><span id='TempWert_1'>-</span>°C</td>\n"
-"        <td id='temp'><span id='TempWert_2'>-</span>°C</td>\n"
-"        <td id='temp'><span id='TempWert_3'>-</span>°C</td>\n"
-"        <td id='temp'><span id='TempWert_4'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert1'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert2'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert3'>-</span>°C</td>\n"
+"        <td id='temp'><span id='TempWert4'>-</span>°C</td>\n"
 "    </tr>\n"
 "</table>\n"
 "<script>\n"
-"setInterval(function() {\n"
-"  getData_1();\n"
-"}, 1000);\n"
-"function getData_1() {\n"
+"  var t = 40\n"
+"setInterval(function() {t = t+1\n"
+"  getData();\n"
+" }, 1);\n"
+"function getData() {\n"
+"  var value = t % 40 \n"
 "  var xhttp = new XMLHttpRequest();\n"
 "  xhttp.onreadystatechange = function() {\n"
-"    if (this.readyState == 4 && this.status == 200) {\n"
-"      document.getElementById('TempWert_1').innerHTML = this.responseText;\n"
+"    if (this.readyState == 4 && this.status == 200 && value <= 10) {\n"
+"      document.getElementById('TempWert1').innerHTML = this.responseText;\n"
 "    }\n"
-"    if (this.readyState == 4 && this.status == 200) {\n"
-"      document.getElementById('TempWert_2').innerHTML = this.responseText;\n"
+"    else if (this.readyState == 4 && this.status == 200 && value - 10 <=10) {\n"
+"      document.getElementById('TempWert2').innerHTML = this.responseText;\n"
 "    }\n"
-"    if (this.readyState == 4 && this.status == 200) {\n"
-"      document.getElementById('TempWert_3').innerHTML = this.responseText;\n"
+"    else if (this.readyState == 4 && this.status == 200 && value - 20 <= 10) {\n"
+"      document.getElementById('TempWert3').innerHTML = this.responseText;\n"
 "    }\n"
-"    if (this.readyState == 4 && this.status == 300) {\n"
-"      document.getElementById('TempWert_4').innerHTML = this.responseText;\n"
+"    else if (this.readyState == 4 && this.status == 200 && value > 30) {\n"
+"      document.getElementById('TempWert4').innerHTML = this.responseText;\n"
 "    }\n"
 "  };\n"
 "  xhttp.open('GET', 'TempWeb', true);\n"
@@ -76,10 +77,25 @@ void indexHTML() {
 
 void TempMessung() {
   sensors.requestTemperatures();
-  String TempWert_1 = String(45.5,1);
-  String TempWert_2 = String(4.5,1);
-  server.send(200, "text/plane", TempWert_1);
-  server.send(300, "text/plane", TempWert_2);
+  String TempWert_1 = String(sensors.getTempCByIndex(0),1);
+  //String TempWert_2 = String(4.4,1);
+ // String TempWert_3 = String(4.6,1);
+//  String TempWert_4 = String(4.7,1);
+    server.send(200, "text/plane", TempWert_1);
+/*  for (int i = 0; i<=3000; i++){
+    server.send(200, "text/plane", TempWert_1);
+    delay(1);
+  }
+  for (int i = 0; i<=3000; i++){
+    server.send(200, "text/plane", TempWert_1);
+    delay(1);
+  }
+  for (int i = 0; i<=3000; i++){
+    server.send(200, "text/plane", TempWert_1);
+    delay(1);
+  }*/
+  
+
 }
 
 void setup(void){
